@@ -12,8 +12,8 @@ namespace CourseProjectt.Models
     [PrimaryKey(nameof(CourseId), nameof(UserId))]
     internal class UserCourse
     {
-        public int Grade { get; set; }
-        public string Status { get; set; }
+        public int? Grade { get; set; }
+        public string? Status { get; set; }
 
         [ForeignKey("user")]
         public int UserId { get; set; }  

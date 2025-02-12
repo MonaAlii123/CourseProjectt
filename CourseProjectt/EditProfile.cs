@@ -147,7 +147,7 @@ namespace CourseProjectt
                 context.SaveChanges();
 
                 MessageBox.Show("Profile updated successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                this.Hide();
             }
             else
             {

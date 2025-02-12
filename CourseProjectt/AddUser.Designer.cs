@@ -148,6 +148,7 @@
             button3.TabIndex = 11;
             button3.Text = "Delete";
             button3.UseVisualStyleBackColor = false;
+            button3.Click += button3_Click;
             // 
             // button5
             // 
@@ -334,6 +335,7 @@
             // 
             txt_password.Location = new Point(387, 428);
             txt_password.Name = "txt_password";
+            txt_password.PasswordChar = '*';
             txt_password.Size = new Size(100, 23);
             txt_password.TabIndex = 66;
             // 
@@ -375,6 +377,7 @@
             // cb_role
             // 
             cb_role.FormattingEnabled = true;
+            cb_role.Items.AddRange(new object[] { "instructor ", "student" });
             cb_role.Location = new Point(599, 343);
             cb_role.Name = "cb_role";
             cb_role.Size = new Size(57, 23);

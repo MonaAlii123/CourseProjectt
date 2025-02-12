@@ -30,7 +30,6 @@
         {
             panel1 = new Panel();
             button7 = new Button();
-            button6 = new Button();
             label4 = new Label();
             button5 = new Button();
             button4 = new Button();
@@ -54,7 +53,6 @@
             // 
             panel1.BackColor = Color.FromArgb(3, 14, 28);
             panel1.Controls.Add(button7);
-            panel1.Controls.Add(button6);
             panel1.Controls.Add(label4);
             panel1.Controls.Add(button5);
             panel1.Controls.Add(button4);
@@ -68,26 +66,13 @@
             button7.BackColor = Color.MediumTurquoise;
             button7.Font = new Font("Showcard Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             button7.ForeColor = SystemColors.ButtonHighlight;
-            button7.Location = new Point(21, 213);
+            button7.Location = new Point(21, 266);
             button7.Name = "button7";
             button7.Size = new Size(109, 35);
             button7.TabIndex = 27;
             button7.Text = "Users";
             button7.UseVisualStyleBackColor = false;
             button7.Click += button7_Click;
-            // 
-            // button6
-            // 
-            button6.BackColor = Color.MediumTurquoise;
-            button6.Font = new Font("Showcard Gothic", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            button6.ForeColor = SystemColors.ButtonHighlight;
-            button6.Location = new Point(21, 266);
-            button6.Name = "button6";
-            button6.Size = new Size(109, 35);
-            button6.TabIndex = 26;
-            button6.Text = "Department";
-            button6.UseVisualStyleBackColor = false;
-            button6.Click += button6_Click;
             // 
             // label4
             // 
@@ -282,6 +267,5 @@
         private TextBox txt_deptname;
         private TextBox txt_mangername;
         private Button button7;
-        private Button button6;
     }
 }

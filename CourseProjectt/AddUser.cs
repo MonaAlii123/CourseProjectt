@@ -33,18 +33,24 @@ namespace CourseProjectt
             con = new StudentContextt();
         }
 
-        private void AddUser_Load(object sender, EventArgs e)
+        public void Show()
         {
             dgv_users.DataSource = con.users.Select(n => new { n.Id, n.Name, n.Image, n.Address, n.Email, n.Password, n.phone, n.Grade, n.Role, n.DepartmentId }).ToList();
             cb_dept.DataSource = con.Departments.Select(n => n).ToList();
             cb_dept.ValueMember = "Id";
             cb_dept.DisplayMember = "Name";
-            cb_role.DataSource = con.users.Select(u => u.Role).Distinct().ToList();
-            // cb_role.ValueMember = "Id";
+            cb_role.DataSource = con.users.Select(u => new { u.Id ,u.Role}).Distinct().ToList();
+
+            cb_role.ValueMember = "Id";
             cb_role.DisplayMember = "Role";
             dgv_users.Columns["id"].Visible = false;
             dgv_users.Columns["DepartmentId"].Visible = false;
             dgv_users.Columns["password"].Visible = false;
+        }
+
+        private void AddUser_Load(object sender, EventArgs e)
+        {
+            Show();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -149,15 +155,14 @@ namespace CourseProjectt
                 User user = con.users.Where(n => n.Id == userId).FirstOrDefault();
                 if (user != null)
                 {
+
                     txt_name.Text = user.Name;
                     txt_email.Text = user.Email;
                     txt_password.Text = user.Password;
                     txt_address.Text = user.Address;
                     txt_phone.Text = user.phone;
-                 //  cb_role.SelectedValue = user.Id ;
-                    cb_dept.SelectedValue = user.DepartmentId ;
-
-
+                    cb_role.SelectedValue = user.Role;
+                    cb_dept.SelectedValue = user.DepartmentId;
                     Num_grade2.Value = (int)user.Grade;
                     if (!string.IsNullOrEmpty(user.Image))
                     {
@@ -191,6 +196,8 @@ namespace CourseProjectt
         private void button5_Click(object sender, EventArgs e)
         {
             User s = con.users.Where(n => n.Id == userId).FirstOrDefault();
+            var roleId = (int)cb_role.SelectedValue;
+            var strRole = con.users.Where(n => n.Id == roleId).FirstOrDefault();
             if (!(string.IsNullOrWhiteSpace(txt_name.Text) || string.IsNullOrWhiteSpace(txt_email.Text) || string.IsNullOrWhiteSpace(txt_address.Text) || string.IsNullOrWhiteSpace(txt_phone.Text) || string.IsNullOrWhiteSpace(txt_password.Text)))
             {
                 s.Name = txt_name.Text;
@@ -200,9 +207,11 @@ namespace CourseProjectt
                 s.Password = txt_password.Text;
                 s.phone = txt_phone.Text;
                 s.Grade = (int)Num_grade2.Value;
-                s.Role = cb_role.SelectedValue.ToString();
                 s.DepartmentId = (int)cb_dept.SelectedValue;
+                s.Role = strRole.Role;
                 con.SaveChanges();
+
+                Show();
 
                 dgv_users.DataSource = con.users.Select(n => new { n.Id, n.Name, n.Image, n.Address, n.Email, n.Password, n.phone, n.Grade, n.Role, n.DepartmentId }).ToList();
                 dgv_users.Columns["Id"].Visible = false;
@@ -237,6 +246,25 @@ namespace CourseProjectt
         private void dgv_users_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            User n = con.users.Where(n => n.Id == userId).FirstOrDefault();
+            if (n != null)
+            {
+                con.Remove(n);
+                con.SaveChanges();
+                dgv_users.DataSource = con.users.Select(n => new { n.Id, n.Name, n.Image, n.Address, n.Email, n.Password, n.phone, n.Grade, n.Role, n.DepartmentId }).ToList();
+                dgv_users.Columns["Id"].Visible = false;
+                dgv_users.Columns["DepartmentId"].Visible = false;
+                dgv_users.Columns["Password"].Visible = false;
+
+
+                MessageBox.Show("SuccessFully deleted");
+
+            }
+            else { MessageBox.Show("Error"); }
         }
     }
 }

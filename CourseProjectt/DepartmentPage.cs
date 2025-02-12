@@ -113,18 +113,72 @@ namespace CourseProjectt
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Department n = con.Departments.Where(n => n.Id == deptId).FirstOrDefault();
-            if (n != null)
-            {
-                con.Remove(n);
-                con.SaveChanges();
+            //    Department n = con.Departments.Where(n => n.Id == deptId).FirstOrDefault();
+            //    if (n != null)
+            //    {
+            //        con.Remove(n);
+            //        con.SaveChanges();
 
-                dgv_dept.DataSource = con.Departments.Select(n => new { n.Id, n.Name, n.ManagerName }).ToList();
-                dgv_dept.Columns["Id"].Visible = false;
-                MessageBox.Show("SuccessFully deleted");
+            //        dgv_dept.DataSource = con.Departments.Select(n => new { n.Id, n.Name, n.ManagerName }).ToList();
+            //        dgv_dept.Columns["Id"].Visible = false;
+            //        MessageBox.Show("SuccessFully deleted");
+            //    }
+            //    else { MessageBox.Show("Error"); }
+
+            if (deptId == 0)
+            {
+                MessageBox.Show("Please select a department first!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else { MessageBox.Show("Error"); }
+
+            // تأكيد الحذف من المستخدم
+            DialogResult confirmDelete = MessageBox.Show(
+                "Are you sure you want to delete this department?",
+                "Confirm Deletion",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (confirmDelete == DialogResult.No)
+            {
+                return;
+            }
+
+            try
+            {
+                Department department = con.Departments.FirstOrDefault(n => n.Id == deptId);
+                if (department != null)
+                {
+                    con.Departments.Remove(department);
+                    con.SaveChanges();
+
+                    // تحديث البيانات في DataGridView
+                    dgv_dept.DataSource = con.Departments
+    .Select(n => new { n.Id, n.Name, n.ManagerName })
+    .ToList();
+                    dgv_dept.Columns["Id"].Visible = false;
+
+                    // إعادة تعيين القيم بعد الحذف
+                    deptId = 0;
+                    txt_deptname.Clear();
+                    txt_mangername.Clear();
+
+                    MessageBox.Show("Successfully deleted!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Department not found!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: Unable to delete department.\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+
+
+
+        
 
         private void dgv_dept_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
